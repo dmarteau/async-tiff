@@ -631,7 +631,7 @@ mod test {
 
     use super::*;
 
-    #[async_trait]
+    #[async_trait(?Send)]
     impl MetadataFetch for Bytes {
         async fn fetch(&self, range: std::ops::Range<u64>) -> crate::error::AsyncTiffResult<Bytes> {
             let usize_range = range.start as usize..range.end as usize;

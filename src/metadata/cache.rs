@@ -143,7 +143,7 @@ impl<F: MetadataFetch> ReadaheadMetadataCache<F> {
     }
 }
 
-#[async_trait]
+#[async_trait(?Send)]
 impl<F: MetadataFetch + Send + Sync> MetadataFetch for ReadaheadMetadataCache<F> {
     async fn fetch(&self, range: Range<u64>) -> AsyncTiffResult<Bytes> {
         let mut cache = self.cache.lock().await;
@@ -190,7 +190,7 @@ mod test {
         }
     }
 
-    #[async_trait]
+    #[async_trait(?Send)]
     impl MetadataFetch for TestFetch {
         async fn fetch(&self, range: Range<u64>) -> crate::error::AsyncTiffResult<Bytes> {
             if range.start as usize >= self.data.len() {
